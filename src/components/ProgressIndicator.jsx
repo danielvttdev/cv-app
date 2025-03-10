@@ -28,37 +28,39 @@ const ProgressIndicator = ({ steps, currentStep, onTabChange }) => {
 
           {steps.map((step, index) => (
             <div 
-              key={step.id} 
-              className="flex-1 flex flex-col items-center"
+              key={index} 
+              className="flex-1 flex flex-col items-center relative group"
             >
-              {/* Círculo */}
+              {/* Círculo y nombre */}
               <button
                 onClick={() => onTabChange(index)}
-                className={`z-10 w-5 h-5 rounded-full flex items-center justify-center font-bold text-white text-xs transition-colors duration-200 ${
-                  index <= currentStep
-                    ? "bg-blue-600"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                className="z-10 flex flex-col items-center"
               >
-                <span
-                  className={`h-2 w-2 rounded-full transition-colors duration-200
-                    ${index <= currentStep ? 'bg-white' : 'bg-transparent'}
-                  `}
-                />
+                <div
+                  className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-white text-xs transition-colors duration-200 ${
+                    index <= currentStep
+                      ? "bg-blue-600"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                >
+                  <span
+                    className={`h-2 w-2 rounded-full transition-colors duration-200
+                      ${index <= currentStep ? 'bg-white' : 'bg-transparent'}
+                    `}
+                  />
+                </div>
+                
+                {/* Nombre del paso */}
+                <span 
+                  className={`mt-2 text-sm font-medium text-center transition-colors duration-200 ${
+                    index === currentStep 
+                      ? "text-blue-600" 
+                      : "text-gray-600 group-hover:text-gray-800"
+                  }`}
+                >
+                  {step.name}
+                </span>
               </button>
-              
-              {/* Etiqueta */}
-              <span 
-                className={`mt-2 text-[10px] sm:text-xs font-medium text-center max-w-[80px] ${
-                  index === currentStep ? "text-blue-600 font-medium" : "text-gray-600"
-                }`}
-                style={{
-                  wordWrap: 'break-word',
-                  hyphens: 'auto'
-                }}
-              >
-                {step.label}
-              </span>
             </div>
           ))}
         </div>

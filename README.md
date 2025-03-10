@@ -1,3 +1,33 @@
+# CV Generator App
+
+Aplicación web para generar CVs profesionales de forma sencilla.
+
+## Características
+
+- Formulario paso a paso
+- Vista previa en tiempo real
+- Generación de PDF
+- Envío por correo electrónico
+- Diseño responsive
+
+## Tecnologías
+
+- React
+- Vite
+- Tailwind CSS
+- EmailJS
+
+## Demo
+
+Puedes ver la aplicación en vivo en: [CV Generator App](https://cv-app-danielvttdev.vercel.app)
+
+## Desarrollo
+
+1. Clonar el repositorio
+2. Instalar dependencias: `npm install`
+3. Crear archivo `.env` con las variables necesarias
+4. Ejecutar en desarrollo: `npm run dev`
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

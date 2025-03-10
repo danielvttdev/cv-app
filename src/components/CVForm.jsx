@@ -21,7 +21,7 @@ const tabs = [
   { name: 'Resumen', component: Summary },
   { name: 'Educación', component: Education },
   { name: 'Experiencia', component: WorkExperience },
-  { name: 'Habilidades e Idiomas', component: Skills },
+  { name: 'Habilidades', component: Skills },
   { name: 'Certificaciones', component: Certifications },
 ];
 
