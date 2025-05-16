@@ -1,4 +1,4 @@
-import CVForm from './components/CVForm';
+import CVForm from './CVForm';
 import './index.css';
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Generador de CV</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Generador de CV Profesional para ATS</h1>
         </div>
       </header>
       <main>

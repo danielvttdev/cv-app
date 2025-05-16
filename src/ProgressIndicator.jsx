@@ -1,6 +1,11 @@
 import React from 'react';
 
-const ProgressIndicator = ({ activeTab, totalTabs, tabLabels }) => {
+const ProgressIndicator = ({ activeTab, totalTabs, tabLabels = ["Paso 1", "Paso 2", "Paso 3"] }) => {
+  // Asegurarse de que tabLabels tenga al menos totalTabs elementos
+  const labels = tabLabels && tabLabels.length >= totalTabs 
+    ? tabLabels 
+    : Array(totalTabs).fill().map((_, i) => `Paso ${i+1}`);
+
   return (
     <div className="progress-indicator flex items-center justify-center w-full py-4">
       <div className="flex relative w-full max-w-3xl justify-between">
@@ -23,7 +28,7 @@ const ProgressIndicator = ({ activeTab, totalTabs, tabLabels }) => {
             <span className={`text-xs text-center whitespace-nowrap ${
               index === activeTab ? "text-blue-600 font-medium" : "text-gray-600"
             }`}>
-              {tabLabels[index]}
+              {labels[index]}
             </span>
           </div>
         ))}

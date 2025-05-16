@@ -5,15 +5,9 @@ import { cvSchema } from "./schema";
 import Tabs from "./Tabs";
 import PersonalInfo from "./PersonalInfo";
 import Education from "./Education";
-import CVPreview from "./CVPreview";
+import ATSFormat, { generateATSPDF } from "./ATSFormat";
+import ATSTips from "./ATSTips";
 import ProgressIndicator from "./ProgressIndicator";
-import emailjs from "emailjs-com";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
-const EMAILJS_SERVICE_ID = "service_hreyjse";
-const EMAILJS_TEMPLATE_ID = "template_ysegiyd";
-const EMAILJS_PUBLIC_KEY = "Xs5TxREYTn1rUGzDJ";
 
 function CVForm() {
   const [activeTab, setActiveTab] = useState(0);
@@ -25,42 +19,32 @@ function CVForm() {
       name: "",
       email: "",
       phone: "",
-      education: [{ degree: "", institution: "", startDate: "", endDate: "", current: false }],
+      location: "",
+      linkedin: "",
+      professionalSummary: "",
+      skills: "",
+      keywords: "",
+      education: [{ 
+        degree: "", 
+        institution: "", 
+        startDate: "", 
+        endDate: "", 
+        current: false,
+        description: ""
+      }],
     },
   });
 
   const { handleSubmit, watch } = methods;
   const formData = watch();
 
-  const onSubmit = async (data) => {
+  // Descargar el CV ATS generado
+  const downloadCV = async () => {
     try {
-      const element = document.getElementById("cv-preview");
-      if (!element) throw new Error("No se encontró el elemento de vista previa");
-
-      const canvas = await html2canvas(element);
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
-      const pdfBlob = pdf.output("blob");
-
-      const emailParams = {
-        to_email: data.email,
-        name: data.name,
-        message: "Tu CV ha sido generado. Descárgalo desde tu dispositivo.",
-      };
-
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        emailParams,
-        EMAILJS_PUBLIC_KEY
-      );
-
-      pdf.save("cv.pdf");
-      console.log("CV generado y enviado con éxito");
+      const pdf = await generateATSPDF(formData);
+      pdf.save("cv-ats.pdf");
     } catch (error) {
-      console.error("Error al generar o enviar el CV:", error);
-      alert(`Error: ${error.message}`);
+      alert("Error al generar el PDF: " + error.message);
     }
   };
 
@@ -75,15 +59,41 @@ function CVForm() {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden my-6">
       <h1 className="text-3xl font-bold text-center p-6 bg-gray-50 border-b text-gray-800">
-        Creador de Curriculum Vitae
+        Generador de CV Optimizado para ATS
       </h1>
-      <ProgressIndicator activeTab={activeTab} totalTabs={tabs.length} />
+      <ProgressIndicator 
+        activeTab={activeTab} 
+        totalTabs={tabs.length} 
+        tabLabels={tabs}
+      />
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(() => setActiveTab(2))}>
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
             <PersonalInfo title={tabs[0]} />
             <Education title={tabs[1]} />
-            <CVPreview title={tabs[2]} data={formData} />
+            <div className="px-6 py-4">
+              <h2 className="text-xl font-semibold mb-4 preview-heading">
+                {tabs[2]}
+              </h2>
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4">
+                <p className="text-sm text-teal-700">
+                  <strong>Vista previa:</strong> Así se verá tu CV optimizado para sistemas ATS. Si todo está correcto, descárgalo en PDF.
+                </p>
+              </div>
+              <div className="preview-container">
+                <ATSFormat data={formData} />
+                <div className="preview-actions mt-6 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={downloadCV}
+                    className="preview-button download-button text-white bg-teal-600 hover:bg-teal-700 px-6 py-3 text-lg font-bold"
+                  >
+                    Descargar CV ATS
+                  </button>
+                </div>
+              </div>
+              <ATSTips />
+            </div>
           </Tabs>
           <div className="p-6 flex justify-between">
             <button
@@ -96,22 +106,15 @@ function CVForm() {
             >
               Anterior
             </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              disabled={activeTab === tabs.length - 1}
-              className={`px-4 py-2 rounded-md font-semibold text-white transition-colors duration-300 ${
-                activeTab === tabs.length - 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              Siguiente
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded-md font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors duration-300"
-            >
-              Generar CV
-            </button>
+            {activeTab < tabs.length - 1 && (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="px-4 py-2 rounded-md font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
+              >
+                Siguiente
+              </button>
+            )}
           </div>
         </form>
       </FormProvider>
