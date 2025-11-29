@@ -1,0 +1,449 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden my-8 font-sans">
+    <!-- Progress Indicator -->
+    <div
+        class="gradient-bg p-6 border-b border-white/10 flex flex-col md:flex-row justify-between items-center sticky top-0 z-10 shadow-md">
+        <h2 class="text-white font-bold text-xl mb-4 md:mb-0 hidden md:block">NexMavin Builder</h2>
+        <div class="flex space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 justify-center mx-auto">
+            <button onclick="switchTab(0)" id="tab-btn-0"
+                class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white text-purple-600 shadow-lg transform scale-105">1.
+                Personal</button>
+            <button onclick="switchTab(1)" id="tab-btn-1"
+                class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">2.
+                Educación</button>
+            <button onclick="switchTab(2)" id="tab-btn-2"
+                class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">3.
+                Habilidades</button>
+            <button onclick="switchTab(3)" id="tab-btn-3"
+                class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">4.
+                Vista Previa</button>
+        </div>
+    </div>
+
+    <form id="cv-form" class="p-0">
+        <!-- Tab 1: Personal Info -->
+        <div id="tab-0" class="tab-content p-8 bg-slate-50 min-h-[600px]">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Información Personal</h2>
+                    <p class="text-slate-500">Comienza con tus datos básicos y una foto profesional.</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+                    <!-- Photo Upload Section -->
+                    <div class="md:col-span-4 flex flex-col items-center space-y-4">
+                        <div class="relative group">
+                            <div id="photo-preview"
+                                class="w-40 h-40 rounded-full bg-slate-200 border-4 border-white shadow-lg flex items-center justify-center overflow-hidden bg-cover bg-center"
+                                style="background-image: url('https://via.placeholder.com/150?text=Foto');">
+                                <!-- Image will be set as background -->
+                            </div>
+                            <label for="photo-upload"
+                                class="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full cursor-pointer hover:bg-purple-700 shadow-md transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 0011.586 3H8.414a1 1 0 00-.707.293L6.293 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </label>
+                            <input type="file" id="photo-upload" accept="image/*" class="hidden"
+                                onchange="handlePhotoUpload(this)">
+                        </div>
+                        <p class="text-xs text-slate-400 text-center">Recomendado: Fondo blanco,<br>formato cuadrado.
+                        </p>
+                    </div>
+
+                    <!-- Inputs Section -->
+                    <div class="md:col-span-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div class="col-span-2">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nombre Completo</label>
+                            <input type="text" name="name"
+                                class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                                placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+                            <input type="email" name="email"
+                                class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                                placeholder="juan@ejemplo.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Teléfono</label>
+                            <input type="text" name="phone"
+                                class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                                placeholder="+34 600 000 000">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Ubicación</label>
+                            <input type="text" name="location"
+                                class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                                placeholder="Madrid, España">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">LinkedIn / Portfolio</label>
+                            <input type="text" name="linkedin"
+                                class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                                placeholder="linkedin.com/in/juanperez">
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-12">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Resumen Profesional</label>
+                        <textarea name="professionalSummary" rows="4"
+                            class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                            placeholder="Soy un profesional apasionado con experiencia en..."></textarea>
+                        <p class="text-xs text-slate-400 mt-1 text-right">Menciona tus logros clave y objetivos.</p>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button type="button" onclick="switchTab(1)"
+                        class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        Siguiente: Educación &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Education -->
+        <div id="tab-1" class="tab-content hidden p-8 bg-slate-50 min-h-[600px]">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Formación Académica</h2>
+                    <p class="text-slate-500">Añade tus estudios más relevantes.</p>
+                </div>
+
+                <div id="education-container" class="space-y-6">
+                    <div
+                        class="education-item bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative group hover:shadow-md transition-all">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div class="col-span-2">
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Título /
+                                    Grado</label>
+                                <input type="text" name="edu_degree[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-lg font-semibold text-slate-800 bg-transparent transition-colors"
+                                    placeholder="Ej: Grado en Ingeniería Informática">
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Institución</label>
+                                <input type="text" name="edu_institution[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                    placeholder="Universidad Complutense">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Inicio</label>
+                                    <input type="text" name="edu_start[]"
+                                        class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                        placeholder="2018">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Fin</label>
+                                    <input type="text" name="edu_end[]"
+                                        class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                        placeholder="2022">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="addEducation()"
+                    class="mt-6 flex items-center text-purple-600 hover:text-purple-800 font-bold transition-colors group">
+                    <span class="bg-purple-100 p-2 rounded-full mr-2 group-hover:bg-purple-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    Añadir otra titulación
+                </button>
+
+                <div class="mt-12 flex justify-between items-center border-t border-slate-200 pt-8">
+                    <button type="button" onclick="switchTab(0)"
+                        class="text-slate-500 hover:text-slate-800 font-semibold px-4 py-2 transition-colors">
+                        &larr; Volver
+                    </button>
+                    <button type="button" onclick="switchTab(2)"
+                        class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        Siguiente: Habilidades &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Skills (NEW) -->
+        <div id="tab-2" class="tab-content hidden p-8 bg-slate-50 min-h-[600px]">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Habilidades y Competencias</h2>
+                    <p class="text-slate-500">Destaca tus conocimientos técnicos, idiomas y habilidades blandas.</p>
+                </div>
+
+                <!-- Software / Hard Skills -->
+                <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        Software y Tecnologías
+                    </h3>
+                    <div class="col-span-12">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Herramientas (separadas por
+                            comas)</label>
+                        <input type="text" name="skills"
+                            class="w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 border transition-all"
+                            placeholder="Python, React, Excel Avanzado, Photoshop, SAP...">
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                        </svg>
+                        Idiomas
+                    </h3>
+                    <div id="languages-container" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Idioma</label>
+                                <input type="text" name="lang_name[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-green-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                    placeholder="Inglés">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Nivel</label>
+                                <select name="lang_level[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-green-500 outline-none py-2 text-slate-700 bg-transparent transition-colors">
+                                    <option value="Básico">Básico</option>
+                                    <option value="Intermedio">Intermedio</option>
+                                    <option value="Avanzado">Avanzado</option>
+                                    <option value="Nativo">Nativo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addLanguage()"
+                        class="mt-4 text-sm font-bold text-green-600 hover:text-green-800">+ Añadir otro idioma</button>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Habilidades Blandas
+                    </h3>
+                    <div class="col-span-12">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Competencias (separadas por
+                            comas)</label>
+                        <input type="text" name="soft_skills"
+                            class="w-full rounded-lg border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 py-3 px-4 border transition-all"
+                            placeholder="Liderazgo, Trabajo en equipo, Comunicación asertiva...">
+                    </div>
+                </div>
+
+                <div class="mt-12 flex justify-between items-center border-t border-slate-200 pt-8">
+                    <button type="button" onclick="switchTab(1)"
+                        class="text-slate-500 hover:text-slate-800 font-semibold px-4 py-2 transition-colors">
+                        &larr; Volver
+                    </button>
+                    <button type="button" onclick="switchTab(3)"
+                        class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        Generar Vista Previa &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Preview -->
+        <div id="tab-3" class="tab-content hidden p-4 bg-slate-100 min-h-screen">
+            <div class="max-w-5xl mx-auto">
+                <div
+                    class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-col md:flex-row justify-between items-center border border-slate-200">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="bg-green-100 text-green-700 p-2 rounded-full mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">CV Optimizado para ATS</h3>
+                            <p class="text-sm text-slate-500">Listo para descargar. El texto es 100% legible por robots.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button type="button" onclick="switchTab(2)"
+                            class="px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors">
+                            Editar
+                        </button>
+                        <button type="button" onclick="printCV()"
+                            class="bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-800 font-bold shadow-md transition-all flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Descargar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Area (A4 Container) -->
+                <div class="flex justify-center overflow-x-auto pb-8">
+                    <div id="cv-preview"
+                        class="ats-preview bg-white shadow-2xl w-[210mm] min-h-[297mm] p-[15mm] mx-auto relative">
+
+                        <!-- Header / Contact Info -->
+                        <header class="border-b-2 border-slate-800 pb-6 mb-6 flex items-start justify-between">
+                            <div class="flex-1 pr-6">
+                                <h1 id="preview-name"
+                                    class="text-4xl font-bold text-slate-900 uppercase tracking-tight mb-2">
+                                    NOMBRE
+                                    APELLIDO</h1>
+                                <div class="text-sm text-slate-600 flex flex-wrap gap-y-1 gap-x-3 font-medium">
+                                    <span id="preview-location" class="flex items-center"><svg class="w-3 h-3 mr-1"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                                clip-rule="evenodd" />
+                                        </svg> Ubicación</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span id="preview-phone" class="flex items-center"><svg class="w-3 h-3 mr-1"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                        </svg> Teléfono</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span id="preview-email" class="flex items-center"><svg class="w-3 h-3 mr-1"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                        </svg> Email</span>
+                                    <span class="text-slate-300 hidden linkedin-separator">|</span>
+                                    <span id="preview-linkedin" class="flex items-center"></span>
+                                </div>
+                            </div>
+                            <!-- Photo in Preview -->
+                            <div id="preview-photo-container"
+                                class="hidden w-[35mm] h-[35mm] rounded-md overflow-hidden border border-slate-200 shadow-sm flex-shrink-0">
+                                <img id="preview-photo-img" src="" alt="Foto Perfil" class="w-full h-full object-cover">
+                            </div>
+                        </header>
+
+                        <!-- Summary -->
+                        <section class="mb-6">
+                            <h2
+                                class="text-lg font-bold text-slate-800 uppercase border-b border-slate-300 mb-3 pb-1 tracking-wide">
+                                Perfil Profesional</h2>
+                            <p id="preview-summary" class="text-sm text-slate-700 leading-relaxed text-justify">
+                                Resumen profesional...
+                            </p>
+                        </section>
+
+                        <!-- Education -->
+                        <section class="mb-6">
+                            <h2
+                                class="text-lg font-bold text-slate-800 uppercase border-b border-slate-300 mb-3 pb-1 tracking-wide">
+                                Educación</h2>
+                            <div id="preview-education" class="space-y-4">
+                                <!-- Education items -->
+                            </div>
+                        </section>
+
+                        <!-- Skills Section (New Layout) -->
+                        <section class="mb-6">
+                            <h2
+                                class="text-lg font-bold text-slate-800 uppercase border-b border-slate-300 mb-3 pb-1 tracking-wide">
+                                Habilidades y Competencias</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-700 uppercase mb-2">Software</h3>
+                                    <div id="preview-skills"
+                                        class="text-sm text-slate-700 leading-relaxed flex flex-wrap gap-2">
+                                        <!-- Hard Skills -->
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-700 uppercase mb-2">Idiomas</h3>
+                                    <ul id="preview-languages" class="text-sm text-slate-700 space-y-1">
+                                        <!-- Languages -->
+                                    </ul>
+                                </div>
+
+                                <div class="col-span-1 md:col-span-2">
+                                    <h3 class="text-sm font-bold text-slate-700 uppercase mb-2">Habilidades Blandas</h3>
+                                    <div id="preview-soft-skills"
+                                        class="text-sm text-slate-700 leading-relaxed flex flex-wrap gap-2">
+                                        <!-- Soft Skills -->
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Footer for ATS (Invisible but helpful structure) -->
+                        <div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
+                            CV generado profesionalmente
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Print Styles -->
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #cv-preview,
+        #cv-preview * {
+            visibility: visible;
+        }
+
+        #cv-preview {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 15mm !important;
+            box-shadow: none;
+            border: none;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+    }
+</style>
+{% endblock %}
