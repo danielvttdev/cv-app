@@ -5,7 +5,10 @@
     <!-- Progress Indicator -->
     <div
         class="gradient-bg p-6 border-b border-white/10 flex flex-col md:flex-row justify-between items-center sticky top-0 z-10 shadow-md">
-        <h2 class="text-white font-bold text-xl mb-4 md:mb-0 hidden md:block">NexMavin Builder</h2>
+        <div class="flex items-center mb-4 md:mb-0">
+            <img src="/static/nexmavin-logo.jpg" alt="NexMavin Logo" class="w-12 h-12 rounded-lg mr-3 shadow-lg">
+            <h2 class="text-white font-bold text-xl hidden md:block">NexMavin Builder</h2>
+        </div>
         <div class="flex space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 justify-center mx-auto">
             <button onclick="switchTab(0)" id="tab-btn-0"
                 class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white text-purple-600 shadow-lg transform scale-105">1.
@@ -15,9 +18,12 @@
                 Educación</button>
             <button onclick="switchTab(2)" id="tab-btn-2"
                 class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">3.
-                Habilidades</button>
+                Experiencia</button>
             <button onclick="switchTab(3)" id="tab-btn-3"
                 class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">4.
+                Habilidades</button>
+            <button onclick="switchTab(4)" id="tab-btn-4"
+                class="flex-shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 bg-white/20 text-purple-100 hover:bg-white/30 backdrop-blur-sm">5.
                 Vista Previa</button>
         </div>
     </div>
@@ -174,14 +180,94 @@
                     </button>
                     <button type="button" onclick="switchTab(2)"
                         class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                        Siguiente: Experiencia &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Experience (NEW) -->
+        <div id="tab-2" class="tab-content hidden p-8 bg-slate-50 min-h-[600px]">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Experiencia Laboral</h2>
+                    <p class="text-slate-500">Añade tu historial de trabajo, comenzando por el más reciente.</p>
+                </div>
+
+                <div id="experience-container" class="space-y-6">
+                    <div
+                        class="experience-item bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative group hover:shadow-md transition-all">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div class="col-span-2">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Cargo
+                                    / Puesto</label>
+                                <input type="text" name="exp_title[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-lg font-semibold text-slate-800 bg-transparent transition-colors"
+                                    placeholder="Ej: Desarrollador Full Stack">
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Empresa</label>
+                                <input type="text" name="exp_company[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                    placeholder="Nombre de la empresa">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Inicio</label>
+                                    <input type="text" name="exp_start[]"
+                                        class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                        placeholder="Ene 2020">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Fin</label>
+                                    <input type="text" name="exp_end[]"
+                                        class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                        placeholder="Actualidad">
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <label
+                                    class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Descripción
+                                    / Logros</label>
+                                <textarea name="exp_description[]"
+                                    class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors"
+                                    rows="3"
+                                    placeholder="Describe tus responsabilidades y logros principales..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="addExperience()"
+                    class="mt-6 flex items-center text-purple-600 hover:text-purple-800 font-bold transition-colors group">
+                    <span class="bg-purple-100 p-2 rounded-full mr-2 group-hover:bg-purple-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    Añadir otra experiencia
+                </button>
+
+                <div class="mt-12 flex justify-between items-center border-t border-slate-200 pt-8">
+                    <button type="button" onclick="switchTab(1)"
+                        class="text-slate-500 hover:text-slate-800 font-semibold px-4 py-2 transition-colors">
+                        &larr; Volver
+                    </button>
+                    <button type="button" onclick="switchTab(3)"
+                        class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                         Siguiente: Habilidades &rarr;
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Tab 3: Skills (NEW) -->
-        <div id="tab-2" class="tab-content hidden p-8 bg-slate-50 min-h-[600px]">
+        <!-- Tab 4: Skills -->
+        <div id="tab-3" class="tab-content hidden p-8 bg-slate-50 min-h-[600px]">
             <div class="max-w-3xl mx-auto">
                 <div class="mb-8">
                     <h2 class="text-2xl font-bold text-slate-800 mb-2">Habilidades y Competencias</h2>
@@ -263,11 +349,11 @@
                 </div>
 
                 <div class="mt-12 flex justify-between items-center border-t border-slate-200 pt-8">
-                    <button type="button" onclick="switchTab(1)"
+                    <button type="button" onclick="switchTab(2)"
                         class="text-slate-500 hover:text-slate-800 font-semibold px-4 py-2 transition-colors">
                         &larr; Volver
                     </button>
-                    <button type="button" onclick="switchTab(3)"
+                    <button type="button" onclick="switchTab(4)"
                         class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                         Generar Vista Previa &rarr;
                     </button>
@@ -275,8 +361,8 @@
             </div>
         </div>
 
-        <!-- Tab 4: Preview -->
-        <div id="tab-3" class="tab-content hidden p-4 bg-slate-100 min-h-screen">
+        <!-- Tab 5: Preview -->
+        <div id="tab-4" class="tab-content hidden p-4 bg-slate-100 min-h-screen">
             <div class="max-w-5xl mx-auto">
                 <div
                     class="bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-col md:flex-row justify-between items-center border border-slate-200">
@@ -295,7 +381,7 @@
                         </div>
                     </div>
                     <div class="flex space-x-3">
-                        <button type="button" onclick="switchTab(2)"
+                        <button type="button" onclick="switchTab(3)"
                             class="px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors">
                             Editar
                         </button>
@@ -371,6 +457,16 @@
                                 Educación</h2>
                             <div id="preview-education" class="space-y-4">
                                 <!-- Education items -->
+                            </div>
+                        </section>
+
+                        <!-- Experience -->
+                        <section class="mb-6">
+                            <h2
+                                class="text-lg font-bold text-slate-800 uppercase border-b border-slate-300 mb-3 pb-1 tracking-wide">
+                                Experiencia Laboral</h2>
+                            <div id="preview-experience" class="space-y-4">
+                                <!-- Experience items -->
                             </div>
                         </section>
 

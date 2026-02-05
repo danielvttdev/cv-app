@@ -5,7 +5,7 @@ function switchTab(index) {
     document.getElementById(`tab-${index}`).classList.remove('hidden');
 
     // Update buttons
-    [0, 1, 2, 3].forEach(i => {
+    [0, 1, 2, 3, 4].forEach(i => {
         const btn = document.getElementById(`tab-btn-${i}`);
         if (i === index) {
             // Active state
@@ -18,8 +18,8 @@ function switchTab(index) {
         }
     });
 
-    // If switching to preview (index 3), update the content
-    if (index === 3) {
+    // If switching to preview (index 4), update the content
+    if (index === 4) {
         updatePreview();
     }
 }
@@ -65,6 +65,44 @@ function addEducation() {
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Fin</label>
                     <input type="text" name="edu_end[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors" placeholder="2022">
                 </div>
+            </div>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 000-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    `;
+    container.appendChild(div);
+}
+
+function addExperience() {
+    const container = document.getElementById('experience-container');
+    const div = document.createElement('div');
+    div.className = 'experience-item bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative group hover:shadow-md transition-all';
+    div.innerHTML = `
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="col-span-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Cargo / Puesto</label>
+                <input type="text" name="exp_title[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-lg font-semibold text-slate-800 bg-transparent transition-colors" placeholder="Ej: Desarrollador Full Stack">
+            </div>
+            <div class="col-span-2 md:col-span-1">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Empresa</label>
+                <input type="text" name="exp_company[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors" placeholder="Nombre de la empresa">
+            </div>
+            <div class="grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Inicio</label>
+                    <input type="text" name="exp_start[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors" placeholder="Ene 2020">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Fin</label>
+                    <input type="text" name="exp_end[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors" placeholder="Actualidad">
+                </div>
+            </div>
+            <div class="col-span-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Descripción / Logros</label>
+                <textarea name="exp_description[]" class="w-full border-b-2 border-slate-200 focus:border-blue-500 outline-none py-2 text-slate-700 bg-transparent transition-colors" rows="3" placeholder="Describe tus responsabilidades y logros principales..."></textarea>
             </div>
         </div>
         <button type="button" onclick="this.parentElement.remove()" class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100">
@@ -198,6 +236,31 @@ function updatePreview() {
             <div class="text-sm text-slate-700 font-medium">${degree}</div>
         `;
         eduContainer.appendChild(div);
+    });
+
+    // Experience
+    const expContainer = document.getElementById('preview-experience');
+    expContainer.innerHTML = '';
+
+    const expTitles = formData.getAll('exp_title[]');
+    const expCompanies = formData.getAll('exp_company[]');
+    const expStarts = formData.getAll('exp_start[]');
+    const expEnds = formData.getAll('exp_end[]');
+    const expDescriptions = formData.getAll('exp_description[]');
+
+    expTitles.forEach((title, i) => {
+        if (!title) return;
+        const div = document.createElement('div');
+        div.className = 'mb-4 pb-4 border-b border-slate-100 last:border-0';
+        div.innerHTML = `
+            <div class="flex justify-between items-baseline mb-1">
+                <h3 class="font-bold text-md text-slate-900">${title}</h3>
+                <span class="text-sm font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded">${expStarts[i] || ''} - ${expEnds[i] || ''}</span>
+            </div>
+            <div class="text-sm text-slate-600 font-medium mb-1">${expCompanies[i] || ''}</div>
+            <p class="text-sm text-slate-700">${expDescriptions[i] || ''}</p>
+        `;
+        expContainer.appendChild(div);
     });
 }
 
